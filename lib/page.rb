@@ -18,9 +18,9 @@ class Page
               Circulating_supply: node.css('td.cmc-table__cell--sort-by__circulating-supply div').text,
               Change: node.css('td.cmc-table__cell--sort-by__percent-change-24-h div').text
       }
-      ans << details_hash
+      details_arr << details_hash
     end
-    ans
+    details_arr
   end
 
 end
