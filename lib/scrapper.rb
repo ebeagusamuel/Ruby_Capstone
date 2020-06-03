@@ -11,13 +11,9 @@ class Scrapper
 
   def scrape
     scraped_pages = []
-    start = 1
-    while start <= 1
-      doc = Nokogiri::HTML(open("#{url}#{start}"))
-      doc.css('tr.cmc-table-row').each do |node|
-        scraped_pages << node
-      end
-      start += 1
+    doc = Nokogiri::HTML(open(url))
+    doc.css('tr.cmc-table-row').each do |node|
+      scraped_pages << node
     end
     scraped_pages
   end

@@ -1,6 +1,3 @@
-require 'open-uri'
-require 'nokogiri'
-
 class Page
   attr_reader :pages
 
