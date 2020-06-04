@@ -1,7 +1,7 @@
 require 'open-uri'
 require 'nokogiri'
+require 'httparty'
 
-# rubocop :disable Security/Open
 class Scrapper
   attr_reader :url
 
@@ -11,11 +11,11 @@ class Scrapper
 
   def scrape
     scraped_pages = []
-    doc = Nokogiri::HTML(open(url))
+    page_body = HTTParty.get(url).body
+    doc = Nokogiri::HTML(page_body)
     doc.css('tr.cmc-table-row').each do |node|
       scraped_pages << node
     end
     scraped_pages
   end
 end
-# rubocop :enable Security/Open
