@@ -30,7 +30,7 @@ jobs:
             "platform_branch": "${{steps.branch_name.outputs.ref }}",
             "cucumber_profile": "testbox",
             "job_name": "business_tests_testbox_gha",
-            "workers_count": "40"
+            "worker_count": "40"
           }'
       - name: Run Talent Portal Features
         if: ${{ contains(github.event.comment.body, 'features for talent portal') }}
@@ -42,7 +42,7 @@ jobs:
             "platform_branch": "${{steps.branch_name.outputs.ref }}",
             "cucumber_profile": "jenkins_talent_portal_testbox",
             "job_name": "talent_portal_testbox_gha",
-            "workers_count": "12"
+            "worker_count": "12"
           }'
       - name: Run Staff Portal Features
         if: ${{ contains(github.event.comment.body, 'features for staff portal') }}
@@ -54,7 +54,7 @@ jobs:
             "platform_branch": "${{steps.branch_name.outputs.ref }}",
             "cucumber_profile": "staff_portal_testbox",
             "job_name": "staff_portal_features_testbox-gha",
-            "workers_count": "40"
+            "worker_count": "40"
           }'
       - name: Run Platform Features
         if: ${{ contains(github.event.comment.body, 'features for platform') }}
@@ -66,7 +66,7 @@ jobs:
             "platform_branch": "${{steps.prData.outputs.ref }}",
             "cucumber_profile": "platform_testbox",
             "job_name": "platform_features_testbox-gha",
-            "workers_count": "40"
+            "worker_count": "40"
           }'
 
       - name: React to comment - success or failure
