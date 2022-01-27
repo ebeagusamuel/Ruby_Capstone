@@ -1,0 +1,76 @@
+name: Feature Trigger Comments
+
+on:
+  issue_comment:
+    types: [created]
+
+jobs:
+  triggerPrWorkflow:
+    name: Trigger PR Workflow
+    if: >
+      github.event.issue.pull_request &&
+      startsWith(github.event.comment.body, 'gha run')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Display branch name
+        run: echo ${{GITHUB_REF##*/}}
+      - name: Run Business Tests
+        if: ${{ contains(github.event.comment.body, 'business tests') }}
+        uses: benc-uk/workflow-dispatch@v1.1
+        with:
+          workflow: Features
+          token: ${{ secrets.PAT }}
+          inputs: '{
+            "platform_branch": "${{GITHUB_REF##*/}}",
+            "cucumber_profile": "testbox",
+            "job_name": "business_tests_testbox_gha",
+            "workers_count": 40
+          }'
+      - name: Run Talent Portal Features
+        if: ${{ contains(github.event.comment.body, 'features for talent portal') }}
+        uses: benc-uk/workflow-dispatch@v1.1
+        with:
+          workflow: Features
+          token: ${{ secrets.PAT }}
+          inputs: '{
+            "platform_branch": "${{GITHUB_REF##*/}}",
+            "cucumber_profile": "jenkins_talent_portal_testbox",
+            "job_name": "talent_portal_testbox_gha",
+            "workers_count": 12
+          }'
+      - name: Run Staff Portal Features
+        if: ${{ contains(github.event.comment.body, 'features for staff portal') }}
+        uses: benc-uk/workflow-dispatch@v1.1
+        with:
+          workflow: Features
+          token: ${{ secrets.PAT }}
+          inputs: '{
+            "platform_branch": "${{GITHUB_REF##*/}}",
+            "cucumber_profile": "staff_portal_testbox",
+            "job_name": "staff_portal_features_testbox-gha",
+            "workers_count": 40
+          }'
+      - name: Run Platform Features
+        if: ${{ contains(github.event.comment.body, 'features for platform') }}
+        uses: benc-uk/workflow-dispatch@v1.1
+        with:
+          workflow: Features
+          token: ${{ secrets.PAT }}
+          inputs: '{
+            "platform_branch": "${{GITHUB_REF##*/}}",
+            "cucumber_profile": "platform_testbox",
+            "job_name": "platform_features_testbox-gha",
+            "workers_count": 40
+          }'
+
+      - name: React to comment - success or failure
+        if: ${{ always() }}
+        env:
+          JOB_STATUS: ${{ job.status }}
+        uses: actions/github-script@v5
+        with:
+          github-token: ${{ secrets.PAT }}
+          script: |
+            const { owner, repo } = context.issue;
+            const content = process.env.JOB_STATUS === 'success' ? '+1' : '-1'
+            await github.rest.reactions.createForIssueComment({ owner, repo, comment_id: context.payload.comment.id, content });
