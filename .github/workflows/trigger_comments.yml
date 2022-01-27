@@ -12,8 +12,9 @@ jobs:
       startsWith(github.event.comment.body, 'gha run')
     runs-on: ubuntu-latest
     steps:
-      - name: Display branch name
-        run: echo ${{GITHUB_REF##*/}}
+      - name: Extract branch name
+        run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+        id: extract_branch
       - name: Run Business Tests
         if: ${{ contains(github.event.comment.body, 'business tests') }}
         uses: benc-uk/workflow-dispatch@v1.1
@@ -21,7 +22,7 @@ jobs:
           workflow: Features
           token: ${{ secrets.PAT }}
           inputs: '{
-            "platform_branch": "${{GITHUB_REF##*/}}",
+            "platform_branch": "${{steps.extract_branch.outputs.branch }}",
             "cucumber_profile": "testbox",
             "job_name": "business_tests_testbox_gha",
             "workers_count": 40
@@ -33,7 +34,7 @@ jobs:
           workflow: Features
           token: ${{ secrets.PAT }}
           inputs: '{
-            "platform_branch": "${{GITHUB_REF##*/}}",
+            "platform_branch": "${{steps.extract_branch.outputs.branch }}",
             "cucumber_profile": "jenkins_talent_portal_testbox",
             "job_name": "talent_portal_testbox_gha",
             "workers_count": 12
@@ -45,7 +46,7 @@ jobs:
           workflow: Features
           token: ${{ secrets.PAT }}
           inputs: '{
-            "platform_branch": "${{GITHUB_REF##*/}}",
+            "platform_branch": "${{steps.extract_branch.outputs.branch }}",
             "cucumber_profile": "staff_portal_testbox",
             "job_name": "staff_portal_features_testbox-gha",
             "workers_count": 40
@@ -57,7 +58,7 @@ jobs:
           workflow: Features
           token: ${{ secrets.PAT }}
           inputs: '{
-            "platform_branch": "${{GITHUB_REF##*/}}",
+            "platform_branch": "${{steps.extract_branch.outputs.branch }}",
             "cucumber_profile": "platform_testbox",
             "job_name": "platform_features_testbox-gha",
             "workers_count": 40
