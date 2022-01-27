@@ -12,9 +12,14 @@ jobs:
       startsWith(github.event.comment.body, 'gha run')
     runs-on: ubuntu-latest
     steps:
-      - name: Extract branch name
-        run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
-        id: extract_branch
+      - name: Get Branch
+        id: branch_name
+        uses: actions/github-script@v4
+        with:
+          script: |
+            const { owner, repo, number } = context.issue;
+            const { data: pr } = await github.pulls.get({ owner, repo, pull_number: number });
+            core.setOutput('ref', pr.head.ref)
       - name: Run Business Tests
         if: ${{ contains(github.event.comment.body, 'business tests') }}
         uses: benc-uk/workflow-dispatch@v1.1
@@ -22,7 +27,7 @@ jobs:
           workflow: Features
           token: ${{ secrets.PAT }}
           inputs: '{
-            "platform_branch": "${{steps.extract_branch.outputs.branch }}",
+            "platform_branch": "${{steps.branch_name.outputs.ref }}",
             "cucumber_profile": "testbox",
             "job_name": "business_tests_testbox_gha",
             "workers_count": 40
@@ -34,7 +39,7 @@ jobs:
           workflow: Features
           token: ${{ secrets.PAT }}
           inputs: '{
-            "platform_branch": "${{steps.extract_branch.outputs.branch }}",
+            "platform_branch": "${{steps.branch_name.outputs.ref }}",
             "cucumber_profile": "jenkins_talent_portal_testbox",
             "job_name": "talent_portal_testbox_gha",
             "workers_count": 12
@@ -46,7 +51,7 @@ jobs:
           workflow: Features
           token: ${{ secrets.PAT }}
           inputs: '{
-            "platform_branch": "${{steps.extract_branch.outputs.branch }}",
+            "platform_branch": "${{steps.branch_name.outputs.ref }}",
             "cucumber_profile": "staff_portal_testbox",
             "job_name": "staff_portal_features_testbox-gha",
             "workers_count": 40
@@ -58,7 +63,7 @@ jobs:
           workflow: Features
           token: ${{ secrets.PAT }}
           inputs: '{
-            "platform_branch": "${{steps.extract_branch.outputs.branch }}",
+            "platform_branch": "${{steps.prData.outputs.ref }}",
             "cucumber_profile": "platform_testbox",
             "job_name": "platform_features_testbox-gha",
             "workers_count": 40
