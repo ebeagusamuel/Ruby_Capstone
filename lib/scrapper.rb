@@ -12,7 +12,7 @@ class Scrapper
     scraped_pages = []
     page_body = HTTParty.get(url).body
     doc = Nokogiri::HTML(page_body)
-    doc.css('tr.cmc-table-row').each do |node|
+    doc.css('table.cmc-table tbody tr').each do |node|
       scraped_pages << node
     end
     scraped_pages
