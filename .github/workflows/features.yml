@@ -22,14 +22,14 @@ jobs:
           propagate_failure: true
           wait_workflow: true
           inputs: '{
-            "talent_portal_branch": "${{ github.sha }}"
-            "platform_branch": "master"
+            "talent_portal_branch": "${{ github.sha }}",
+            "platform_branch": "master",
             "billing_branch": "master"
-            "job_name_prefix": "talent_portal"
-            "testbox_profile": "talent_portal"
-            "cucumber_profile": "jenkins_talent_portal_testbox"
-            "worker_count": "12"
-            "kubernetes_namespaces_basename": 'talent-portal'
+            "job_name_prefix": "talent_portal",
+            "testbox_profile": "talent_portal",
+            "cucumber_profile": "jenkins_talent_portal_testbox",
+            "worker_count": "12",
+            "kubernetes_namespaces_basename": "talent-portal"
           }'
         
         
