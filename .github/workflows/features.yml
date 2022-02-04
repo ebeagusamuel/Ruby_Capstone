@@ -25,7 +25,7 @@ jobs:
           inputs: '{
             "talent_portal_branch": "${{ github.sha }}",
             "platform_branch": "master",
-            "billing_branch": "master"
+            "billing_branch": "master",
             "job_name_prefix": "talent_portal",
             "testbox_profile": "talent_portal",
             "cucumber_profile": "jenkins_talent_portal_testbox",
