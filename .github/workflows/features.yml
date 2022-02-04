@@ -23,7 +23,7 @@ jobs:
           propagate_failure: true
           wait_workflow: true
           inputs: '{
-            "talent_portal_branch": "${{ github.sha }}",
+            "talent_portal_branch": "${{ github.ref_name }}",
             "platform_branch": "master",
             "billing_branch": "master",
             "job_name_prefix": "talent_portal",
