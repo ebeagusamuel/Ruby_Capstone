@@ -18,7 +18,7 @@ jobs:
           repo: newsweek-clone
           workflow_file_name: features.yml
           github_token: ${{ secrets.PAT }}
-          ref: ${{ github.sha }}
+          ref: master
           wait_interval: 10
           propagate_failure: true
           wait_workflow: true
