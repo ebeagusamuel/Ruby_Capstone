@@ -1,16 +1,21 @@
 name: Features
 on:
-  pull_request:
-    types: [
-      synchronize, # PR was updated
-      opened, # PR was open
-    ]
+  workflow_call:
+    inputs:
+      name:
+        type: string
+        required: true
+    secrets:
+      PAT:
+        required: true
       
 jobs:
   test:
     name: Run test
     runs-on: ubuntu-latest
     steps:
+      - name: Print out inputs
+        run: echo ${{inputs.name}}
       - name: Test Action
         uses: convictional/trigger-workflow-and-wait@v1.3.0
         with:
@@ -22,15 +27,6 @@ jobs:
           wait_interval: 10
           propagate_failure: true
           wait_workflow: true
-          inputs: '{
-            "talent_portal_branch": "${{ github.ref_name }}",
-            "platform_branch": "master",
-            "billing_branch": "master",
-            "job_name_prefix": "talent_portal",
-            "testbox_profile": "talent_portal",
-            "cucumber_profile": "jenkins_talent_portal_testbox",
-            "worker_count": "12",
-            "kubernetes_namespaces_basename": "talent-portal"
-          }'
+
         
         
