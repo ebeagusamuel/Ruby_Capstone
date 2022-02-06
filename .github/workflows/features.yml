@@ -16,17 +16,17 @@ jobs:
     steps:
       - name: Print out inputs
         run: echo ${{inputs.name}}
-      - name: Test Action
-        uses: convictional/trigger-workflow-and-wait@v1.3.0
-        with:
-          owner: ebeagusamuel
-          repo: newsweek-clone
-          workflow_file_name: features.yml
-          github_token: ${{ secrets.PAT }}
-          ref: master
-          wait_interval: 10
-          propagate_failure: true
-          wait_workflow: true
+      # - name: Test Action
+      #   uses: convictional/trigger-workflow-and-wait@v1.3.0
+      #   with:
+      #     owner: ebeagusamuel
+      #     repo: newsweek-clone
+      #     workflow_file_name: features.yml
+      #     github_token: ${{ secrets.PAT }}
+      #     ref: master
+      #     wait_interval: 10
+      #     propagate_failure: true
+      #     wait_workflow: true
 
         
         
