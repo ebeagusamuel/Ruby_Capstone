@@ -1,51 +1,32 @@
 name: Features
 on:
-  workflow_dispatch:
+  workflow_call:
     inputs:
-      platform_branch:
-        description: 'Input Platform branch'
-        required: false
-        default: 'master'
-      talent_portal_branch:
-        description: 'Input Talent Portal branch'
-        required: false
-        default: 'master'
-      billing_branch:
-        description: 'Input Billing branch'
-        required: false
-        default: 'master'
-      job_name:
-        description: 'Input Job Name for Testbox'
+      name:
         type: string
         required: true
-      cucumber_profile:
-        description: 'Input Cucumber Profile'
-        type: string
+    secrets:
+      PAT:
         required: true
-      worker_count:
-        description: 'Input Number of Worker'
-        type: number
-        required: true
-
+      
 jobs:
-  features:
-    name: Run features
+  test:
+    name: Run test
     runs-on: ubuntu-latest
     steps:
-      - name: Set custom ENV
-        run: |
-          echo "TESTBOX_BRANCH_PLATFORM=${{ github.event.inputs.platform_branch}}" >> $GITHUB_ENV
-          echo "TESTBOX_BRANCH_TALENT_PORTAL=${{ github.event.inputs.talent_portal_branch}}" >> $GITHUB_ENV
-          echo "TESTBOX_BRANCH_BILLING=${{ github.event.inputs.billing_branch}}" >> $GITHUB_ENV
-          echo "WORKER_COUNT=${{ github.event.inputs.worker_count}}" >> $GITHUB_ENV
-          echo "JOB_NAME=${{ github.event.inputs.job_name}}" >> $GITHUB_ENV
-          echo "CUCUMBER_PROFILE=${{ github.event.inputs.cucumber_profile }}" >> $GITHUB_ENV
-      
-      - name: Print Set ENV
-        run: |
-          echo ${{env.TESTBOX_BRANCH_PLATFORM}}
-          echo ${{env.TESTBOX_BRANCH_TALENT_PORTAL}}
-          echo ${{env.TESTBOX_BRANCH_BILLING}}
-          echo ${{env.WORKER_COUNT}}
-          echo ${{env.JOB_NAME}}
-          echo ${{env.CUCUMBER_PROFILE}}
+      - name: Print out inputs
+        run: echo ${{inputs.name}}
+      # - name: Test Action
+      #   uses: convictional/trigger-workflow-and-wait@v1.3.0
+      #   with:
+      #     owner: ebeagusamuel
+      #     repo: newsweek-clone
+      #     workflow_file_name: features.yml
+      #     github_token: ${{ secrets.PAT }}
+      #     ref: master
+      #     wait_interval: 10
+      #     propagate_failure: true
+      #     wait_workflow: true
+
+        
+        

@@ -7,7 +7,6 @@ scrapper_obj = Scrapper.new('https://coinmarketcap.com/')
 scraped = scrapper_obj.scrape
 page = Page.new(scraped)
 arr = page.details
-
 # rubocop disable: Layout/LineLength
 def display_details(details)
   count = 1
